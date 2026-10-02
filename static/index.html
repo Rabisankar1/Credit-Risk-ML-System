@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CreditRisk AI — Intelligent Credit Assessment</title>
+<meta name="description" content="Credit risk assessment.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Inline SVG icon sprite (no external icon library) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.2 8.2-8 9-4.8-.8-8-4.5-8-9V6l8-3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 12l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c1-4 4-6 8-6s7 2 8 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-cash" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-brief" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 7V5h6v2" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 4l2.5 5 5.5.8-4 3.9.9 5.5L12 16.6 7.1 19.2 8 13.7 4 9.8 9.5 9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-percent" viewBox="0 0 24 24"><path d="M19 5L5 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="7" cy="7" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="17" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 21V4m0 1h11l-2 4 2 4H6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 12.5l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 4l9 16H3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4m0 3v.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<!-- Animated background (CSS only) -->
+<div class="bg" aria-hidden="true">
+  <div class="bg-grid"></div>
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="beam"></div>
+  <span class="particle" style="--x:8%;--d:0s;--t:14s"></span>
+  <span class="particle" style="--x:22%;--d:3s;--t:18s"></span>
+  <span class="particle" style="--x:38%;--d:6s;--t:15s"></span>
+  <span class="particle" style="--x:55%;--d:1s;--t:20s"></span>
+  <span class="particle" style="--x:68%;--d:8s;--t:16s"></span>
+  <span class="particle" style="--x:82%;--d:4s;--t:19s"></span>
+  <span class="particle" style="--x:93%;--d:10s;--t:17s"></span>
+</div>
+
+<header class="navbar">
+  <a class="brand" href="#top" aria-label="CreditRisk AI home">
+    <span class="logo"><svg class="ico"><use href="#i-shield"/></svg></span>
+    <span class="brand-text"><strong>CreditRisk AI</strong><small>Intelligent Credit Assessment</small></span>
+  </a>
+  <div class="nav-right">
+    <span class="chip chip-ai">AI Powered</span>
+    <span class="chip status" id="navStatus" role="status" aria-live="polite">
+      <i class="dot" aria-hidden="true"></i><span id="navStatusText">Checking…</span>
+    </span>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <span class="badge"><i class="dot" aria-hidden="true"></i>Powered by Machine Learning</span>
+    <h1>Credit Risk Assessment</h1>
+    <p>Evaluate loan applications with intelligent machine learning and transparent risk insights.</p>
+  </section>
+
+  <section class="dashboard glass" aria-label="Credit risk dashboard">
+    <!-- LEFT: application form -->
+    <div class="panel">
+      <h2>Applicant Information</h2>
+      <form id="loanForm" novalidate>
+        <div class="grid">
+          <div class="field">
+            <label for="person_age">Person Age</label>
+            <div class="control"><svg class="ico"><use href="#i-user"/></svg>
+              <input id="person_age" name="person_age" type="number" step="1" min="18" max="100" required placeholder="e.g. 25" aria-describedby="e-person_age"></div>
+            <p class="err" id="e-person_age" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="person_income">Annual Income</label>
+            <div class="control"><svg class="ico"><use href="#i-cash"/></svg>
+              <input id="person_income" name="person_income" type="number" step="any" min="0" required placeholder="e.g. 50000" aria-describedby="e-person_income"></div>
+            <p class="err" id="e-person_income" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="person_home_ownership">Home Ownership</label>
+            <div class="control"><svg class="ico"><use href="#i-home"/></svg>
+              <select id="person_home_ownership" name="person_home_ownership" required>
+                <option>RENT</option><option>OWN</option><option>MORTGAGE</option><option>OTHER</option></select></div>
+            <p class="err" id="e-person_home_ownership" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="person_emp_length">Employment Length (years)</label>
+            <div class="control"><svg class="ico"><use href="#i-brief"/></svg>
+              <input id="person_emp_length" name="person_emp_length" type="number" step="any" min="0" required placeholder="e.g. 3" aria-describedby="e-person_emp_length"></div>
+            <p class="err" id="e-person_emp_length" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="loan_intent">Loan Intent</label>
+            <div class="control"><svg class="ico"><use href="#i-target"/></svg>
+              <select id="loan_intent" name="loan_intent" required>
+                <option>PERSONAL</option><option>EDUCATION</option><option>MEDICAL</option><option>VENTURE</option><option>HOMEIMPROVEMENT</option><option>DEBTCONSOLIDATION</option></select></div>
+            <p class="err" id="e-loan_intent" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="loan_grade">Loan Grade</label>
+            <div class="control"><svg class="ico"><use href="#i-star"/></svg>
+              <select id="loan_grade" name="loan_grade" required>
+                <option>A</option><option selected>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option></select></div>
+            <p class="err" id="e-loan_grade" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="loan_amnt">Loan Amount</label>
+            <div class="control"><svg class="ico"><use href="#i-cash"/></svg>
+              <input id="loan_amnt" name="loan_amnt" type="number" step="any" min="0" required placeholder="e.g. 10000" aria-describedby="e-loan_amnt"></div>
+            <p class="err" id="e-loan_amnt" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="loan_int_rate">Interest Rate (%)</label>
+            <div class="control"><svg class="ico"><use href="#i-percent"/></svg>
+              <input id="loan_int_rate" name="loan_int_rate" type="number" step="0.01" min="0" required placeholder="e.g. 10.5" aria-describedby="e-loan_int_rate"></div>
+            <p class="err" id="e-loan_int_rate" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="loan_percent_income">Loan Percent Income</label>
+            <div class="control"><svg class="ico"><use href="#i-percent"/></svg>
+              <input id="loan_percent_income" name="loan_percent_income" type="number" step="0.01" min="0" required placeholder="e.g. 0.20" aria-describedby="e-loan_percent_income"></div>
+            <p class="err" id="e-loan_percent_income" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="cb_person_default_on_file">Previous Default</label>
+            <div class="control"><svg class="ico"><use href="#i-flag"/></svg>
+              <select id="cb_person_default_on_file" name="cb_person_default_on_file" required>
+                <option>N</option><option>Y</option></select></div>
+            <p class="err" id="e-cb_person_default_on_file" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="cb_person_cred_hist_length">Credit History Length (years)</label>
+            <div class="control"><svg class="ico"><use href="#i-clock"/></svg>
+              <input id="cb_person_cred_hist_length" name="cb_person_cred_hist_length" type="number" step="1" min="0" required placeholder="e.g. 5" aria-describedby="e-cb_person_cred_hist_length"></div>
+            <p class="err" id="e-cb_person_cred_hist_length" role="alert"></p>
+          </div>
+        </div>
+        <button type="submit" class="btn" id="submitBtn">
+          <svg class="ico"><use href="#i-shield"/></svg>
+          <span id="btnText">Analyze Credit Risk</span>
+          <i class="spinner" aria-hidden="true"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- RIGHT: prediction result -->
+    <div class="panel result-panel">
+      <h2>Your Risk Assessment</h2>
+
+      <div id="emptyState" class="empty">
+        <div class="ring-ghost" aria-hidden="true"><svg class="ico"><use href="#i-shield"/></svg></div>
+        <p>Submit an application to generate an AI-powered assessment.</p>
+      </div>
+
+      <div id="resultState" class="result" hidden aria-live="polite">
+        <div class="gauge" id="gauge">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <defs><linearGradient id="gradLow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#34d399"/></linearGradient>
+              <linearGradient id="gradHigh" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fb923c"/><stop offset="1" stop-color="#f43f5e"/></linearGradient></defs>
+            <circle class="ring-track" cx="60" cy="60" r="52"/>
+            <circle class="ring-fill" id="ringFill" cx="60" cy="60" r="52"/>
+          </svg>
+          <div class="gauge-label"><span id="probValue">0.0%</span><small>Default probability</small></div>
+          <i class="spark s1"></i><i class="spark s2"></i><i class="spark s3"></i>
+        </div>
+        <div class="risk-badge" id="riskBadge">
+          <svg class="ico"><use id="riskIcon" href="#i-check"/></svg>
+          <span id="riskText">LOW RISK</span>
+        </div>
+
+        <h3>Assessment Details</h3>
+        <dl class="details">
+          <div><dt>Default Probability</dt><dd id="dProb">—</dd></div>
+          <div><dt>Decision Threshold</dt><dd id="dThresh">—</dd></div>
+          <div><dt>Prediction</dt><dd id="dPred">—</dd></div>
+          <div><dt>Risk Level</dt><dd id="dLevel">—</dd></div>
+        </dl>
+      </div>
+
+      <div class="api-card" role="status" aria-live="polite">
+        <span class="api-label">Credit Risk API</span>
+        <span class="api-state" id="apiState"><i class="dot" aria-hidden="true"></i><span id="apiStateText">Checking…</span></span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>© 2026 CreditRisk AI</p>
+  <p>AI-assisted credit risk assessment</p>
+  <p>Powered by Machine Learning</p>
+</footer>
+
+<div class="toasts" id="toasts" aria-live="assertive"></div>
+<script src="script.js"></script>
+</body>
+</html>
